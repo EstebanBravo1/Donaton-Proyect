@@ -1,0 +1,8 @@
+{
+	"dependencies": {
+		"wouter": "^3.9.0",
+		"@reduxjs/toolkit": "^2.11.2",
+		"react-redux": "^9.2.0",
+		"react-avatar": "^5.0.4"
+	}
+}

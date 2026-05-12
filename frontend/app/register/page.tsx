@@ -166,7 +166,7 @@ export default function RegisterPage() {
 
 					<div className="flex items-center gap-3 border-l pl-6">
 						<Link
-							href="/"
+							href="/login"
 							className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition hover:text-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
 						>
 							Iniciar sesión

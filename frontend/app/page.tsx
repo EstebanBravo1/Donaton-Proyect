@@ -33,7 +33,9 @@ export default function HomePage() {
                   <LogIn size={18} />
                   Iniciar sesión
                 </button>
-                <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition shadow-sm">
+                <button 
+                  onClick={() => (window.location.href = '/register')} // Redirige a la página de registro
+                  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition shadow-sm">
                   <UserCircle size={18} />
                   Registrarse
                 </button>

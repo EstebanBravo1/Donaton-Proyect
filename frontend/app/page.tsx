@@ -1,120 +1,174 @@
-"use client"; // Importante: Necesario para usar hooks como useState
+"use client";
 
-import React, { useState } from 'react';
-import { UserCircle, LogIn, LogOut, Heart } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { UserCircle, LogIn, LogOut, Heart } from "lucide-react";
+
+type StoredUser = {
+  fullName: string;
+  email: string;
+  password: string;
+  createdAt: string;
+};
+
+type LoggedInUser = Omit<StoredUser, "password">;
+
+const LOCAL_USERS_KEY = "donaton_users";
+const LOCAL_SESSION_KEY = "donaton_session";
 
 export default function HomePage() {
-  // Estado para simular si el usuario está logueado o no
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<LoggedInUser | null>(null);
+
+  useEffect(() => {
+    try {
+      const sessionRaw = window.localStorage.getItem(LOCAL_SESSION_KEY);
+      if (sessionRaw) {
+        const user = JSON.parse(sessionRaw) as LoggedInUser;
+        setLoggedInUser(user);
+      }
+    } catch {
+      window.localStorage.removeItem(LOCAL_SESSION_KEY);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    window.localStorage.removeItem(LOCAL_SESSION_KEY);
+    setLoggedInUser(null);
+  };
 
   return (
     <main className="min-h-screen bg-white">
       {/* NAVBAR */}
-      <nav className="flex justify-between items-center px-8 py-4 border-b bg-white sticky top-0 z-50">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">D</div>
+      <nav className="sticky top-0 z-50 flex items-center justify-between border-b bg-white px-8 py-4">
+        <Link
+          href="/"
+          className="flex items-center gap-2 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+        >
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 font-bold text-white">
+            D
+          </div>
           <span className="text-xl font-bold tracking-tight text-gray-800">Donaton</span>
-        </div>
+        </Link>
 
         <div className="flex items-center gap-6">
-          <div className="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-            <a href="#" className="hover:text-blue-600 transition">Proyectos</a>
-            <a href="#" className="hover:text-blue-600 transition">Transparencia</a>
+          <div className="hidden gap-6 text-sm font-medium text-gray-600 md:flex">
+            <a href="#" className="transition hover:text-blue-600">
+              Proyectos
+            </a>
+            <a href="#" className="transition hover:text-blue-600">
+              Transparencia
+            </a>
           </div>
 
           <div className="flex items-center gap-3 border-l pl-6">
-            {/* Cambiamos los botones del Navbar según el estado */}
-            {!isLoggedIn ? (
+            {/* Navegación según estado de login */}
+            {!loggedInUser ? (
               <>
-                <button 
-                  onClick={() => setIsLoggedIn(true)} // Simulación de login
-                  className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition"
+                <Link
+                  href="/login"
+                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition hover:text-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
                 >
                   <LogIn size={18} />
                   Iniciar sesión
-                </button>
-                <button 
-                  onClick={() => (window.location.href = '/register')} // Redirige a la página de registro
-                  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition shadow-sm">
+                </Link>
+                <Link
+                  href="/register"
+                  className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+                >
                   <UserCircle size={18} />
                   Registrarse
-                </button>
+                </Link>
               </>
             ) : (
-              <button 
-                onClick={() => setIsLoggedIn(false)} // Simulación de logout
-                className="flex items-center gap-2 text-sm font-medium text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition"
-              >
-                <LogOut size={18} />
-                Cerrar sesión
-              </button>
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium text-gray-700">
+                  Hola, {loggedInUser.fullName}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700"
+                >
+                  <LogOut size={18} />
+                  Cerrar sesión
+                </button>
+              </div>
             )}
           </div>
         </div>
       </nav>
 
-      {/* LÓGICA CONDICIONAL DE HEROS */}
-      {isLoggedIn ? (
-        /* HERO ANTERIOR - AHORA CON FONDO AZUL (USUARIO LOGUEADO) */
-        <section className="relative bg-blue-600 py-20 px-6 text-center text-white">
-          <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6 backdrop-blur-sm">
-              <Heart className="text-yellow-400" size={32} fill="currentColor" />
+      {/* HERO SECTION */}
+      {loggedInUser ? (
+        /* HERO USUARIO LOGUEADO */
+        <section className="relative bg-blue-600 px-6 py-20 text-white">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+              <Heart
+                className="text-yellow-400"
+                size={32}
+                fill="currentColor"
+                aria-hidden="true"
+              />
             </div>
-            <h1 className="text-4xl font-extrabold mb-4">
-              ¡Hola de nuevo, Donante!
-            </h1>
-            <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              Tu compromiso hace la diferencia. Estas son las campañas activas donde tu ayuda es vital hoy mismo.
+            <h1 className="mb-4 text-4xl font-extrabold">¡Hola de nuevo, Donante!</h1>
+            <p className="mx-auto mb-8 max-w-2xl text-xl opacity-90">
+              Tu compromiso hace la diferencia. Estas son las campañas activas donde tu ayuda es
+              vital hoy mismo.
             </p>
             <div className="flex justify-center gap-4">
-              <button className="bg-yellow-400 text-blue-900 px-8 py-3 rounded-xl font-bold hover:bg-yellow-300 transition shadow-lg">
+              <button className="rounded-xl bg-yellow-400 px-8 py-3 font-bold text-blue-900 shadow-lg transition hover:bg-yellow-300">
                 Gestionar Donación
               </button>
-              <button className="bg-transparent border-2 border-white/40 px-8 py-3 rounded-xl font-bold hover:bg-white/10 transition">
+              <button className="rounded-xl border-2 border-white/40 px-8 py-3 font-bold transition hover:bg-white/10">
                 Mi Impacto Social
               </button>
             </div>
           </div>
         </section>
       ) : (
-        /* HERO NUEVO (USUARIO VISITANTE) */
-        <section className="relative bg-blue-600 py-24 px-6 text-center text-white">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl font-extrabold mb-4 leading-tight">
+        /* HERO USUARIO VISITANTE */
+        <section className="relative bg-blue-600 px-6 py-24 text-white">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="mb-4 text-5xl font-extrabold leading-tight">
               Transforma tu intención <br /> en ayuda real
             </h1>
-            <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              Únete a la red de Donaton. Regístrate para gestionar tus donaciones y hacer seguimiento del impacto de tu ayuda.
+            <p className="mx-auto mb-8 max-w-2xl text-xl opacity-90">
+              Únete a la red de Donaton. Regístrate para gestionar tus donaciones y hacer
+              seguimiento del impacto de tu ayuda.
             </p>
-            <button className="bg-yellow-400 text-blue-900 px-10 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition shadow-xl">
+            <Link
+              href="/register"
+              className="inline-block rounded-full bg-yellow-400 px-10 py-4 text-lg font-bold text-blue-900 shadow-xl transition hover:bg-yellow-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-300"
+            >
               Comenzar a ayudar
-            </button>
+            </Link>
           </div>
         </section>
       )}
 
       {/* SECCIÓN DE CATEGORÍAS (Visible para todos) */}
-      <section className="py-16 px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">¿Cómo puedes ayudar?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 border rounded-xl hover:shadow-lg transition text-center">
-            <div className="text-4xl mb-4">🍎</div>
-            <h3 className="text-xl font-bold mb-2">Alimentos</h3>
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="mb-12 text-center text-3xl font-bold text-gray-800">¿Cómo puedes ayudar?</h2>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="rounded-xl border p-6 text-center transition hover:shadow-lg">
+            <div className="mb-4 text-4xl">🍎</div>
+            <h3 className="mb-2 text-xl font-bold">Alimentos</h3>
             <p className="text-gray-600">Productos no perecederos y canastas básicas.</p>
           </div>
-          <div className="p-6 border rounded-xl hover:shadow-lg transition text-center">
-            <div className="text-4xl mb-4">👕</div>
-            <h3 className="text-xl font-bold mb-2">Ropa y Abrigo</h3>
+          <div className="rounded-xl border p-6 text-center transition hover:shadow-lg">
+            <div className="mb-4 text-4xl">👕</div>
+            <h3 className="mb-2 text-xl font-bold">Ropa y Abrigo</h3>
             <p className="text-gray-600">Prendas en buen estado para zonas vulnerables.</p>
           </div>
-          <div className="p-6 border rounded-xl hover:shadow-lg transition text-center opacity-75">
-            <div className="text-4xl mb-4">⚕️</div>
-            <h3 className="text-xl font-bold mb-2 text-gray-400">Insumos Médicos</h3>
-            <p className="text-gray-400 text-sm">Próximamente disponible.</p>
+          <div className="rounded-xl border p-6 text-center opacity-75 transition hover:shadow-lg">
+            <div className="mb-4 text-4xl">⚕️</div>
+            <h3 className="mb-2 text-xl font-bold text-gray-400">Insumos Médicos</h3>
+            <p className="text-sm text-gray-400">Próximamente disponible.</p>
           </div>
         </div>
       </section>
+
+      {/* MODAL DE LOGIN REMOVIDO - Ver /login */}
     </main>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Heart, UserCircle } from "lucide-react";
 
@@ -32,6 +33,7 @@ const initialFormData: FormData = {
 };
 
 export default function RegisterPage() {
+	const router = useRouter();
 	const [formData, setFormData] = useState<FormData>(initialFormData);
 	const [errors, setErrors] = useState<FormErrors>({});
 	const [statusMessage, setStatusMessage] = useState("");
@@ -115,10 +117,20 @@ export default function RegisterPage() {
 			JSON.stringify([...storedUsers, userToStore]),
 		);
 
+		const sessionUser = {
+			fullName: userToStore.fullName,
+			email: userToStore.email,
+			createdAt: userToStore.createdAt,
+		};
+		window.localStorage.setItem("donaton_session", JSON.stringify(sessionUser));
+
 		setIsSubmitted(true);
-		setStatusMessage("Registro enviado correctamente. Ahora puedes iniciar sesión.");
 		setErrors({});
 		setFormData(initialFormData);
+
+		setTimeout(() => {
+			router.push("/");
+		}, 1000);
 	};
 
 	return (

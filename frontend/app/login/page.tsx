@@ -112,11 +112,8 @@ export default function LoginPage() {
 
         <div className="flex items-center gap-6">
           <div className="hidden gap-6 text-sm font-medium text-gray-600 md:flex">
-            <a href="#" className="transition hover:text-blue-600 focus-visible:text-blue-600">
-              Proyectos
-            </a>
-            <a href="#" className="transition hover:text-blue-600 focus-visible:text-blue-600">
-              Transparencia
+            <a href="/about-us" className="transition hover:text-blue-600 focus-visible:text-blue-600">
+              Acerca de Nosotros
             </a>
           </div>
 

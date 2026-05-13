@@ -1,0 +1,46 @@
+package main.java.com.DonatonProyect.Bff.controller;
+
+import com.DonatonProyect.Bff.dto.DonationRequest;
+import com.DonatonProyect.Bff.dto.LoginRequest;
+import com.DonatonProyect.Bff.dto.RegisterRequest;
+import com.DonatonProyect.Bff.service.BackendGatewayService;
+
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+public class BffController {
+
+    private final BackendGatewayService backendGatewayService;
+
+    public BffController(BackendGatewayService backendGatewayService) {
+        this.backendGatewayService = backendGatewayService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest request) {
+        return backendGatewayService.registerUser(request);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginRequest request) {
+        return backendGatewayService.loginUser(request);
+    }
+
+    @PostMapping("/donations")
+    public ResponseEntity<Object> createDonation(@Valid @RequestBody DonationRequest request) {
+        return backendGatewayService.createDonation(request);
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<Object> getUserById(@PathVariable Long id) {
+        return backendGatewayService.getUserById(id);
+    }
+}

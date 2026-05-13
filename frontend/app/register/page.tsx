@@ -15,14 +15,14 @@ type FormData = {
 
 type FormErrors = Partial<Record<keyof FormData, string>>;
 
-type StoredUser = {
+type RegisteredUser = {
 	fullName: string;
 	email: string;
-	password: string;
 	createdAt: string;
 };
 
-const LOCAL_USERS_KEY = "donaton_users";
+const LOCAL_SESSION_KEY = "donaton_session";
+const BFF_BASE_URL = process.env.NEXT_PUBLIC_BFF_URL ?? "http://localhost:8082/api";
 
 const initialFormData: FormData = {
 	fullName: "",
@@ -38,20 +38,6 @@ export default function RegisterPage() {
 	const [errors, setErrors] = useState<FormErrors>({});
 	const [statusMessage, setStatusMessage] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(false);
-
-	const getStoredUsers = (): StoredUser[] => {
-		try {
-			const usersRaw = window.localStorage.getItem(LOCAL_USERS_KEY);
-			if (!usersRaw) {
-				return [];
-			}
-
-			const parsedUsers = JSON.parse(usersRaw);
-			return Array.isArray(parsedUsers) ? parsedUsers : [];
-		} catch {
-			return [];
-		}
-	};
 
 	const validateForm = () => {
 		const nextErrors: FormErrors = {};
@@ -81,7 +67,7 @@ export default function RegisterPage() {
 		return nextErrors;
 	};
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		const nextErrors = validateForm();
@@ -93,44 +79,58 @@ export default function RegisterPage() {
 			return;
 		}
 
-		const storedUsers = getStoredUsers();
-		const emailExists = storedUsers.some(
-			(user) => user.email.toLowerCase() === formData.email.trim().toLowerCase(),
-		);
+		try {
+			const response = await fetch(`${BFF_BASE_URL}/register`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					fullName: formData.fullName.trim(),
+					email: formData.email.trim().toLowerCase(),
+					password: formData.password,
+				}),
+			});
 
-		if (emailExists) {
-			setErrors({ email: "Este correo ya fue registrado." });
+			if (!response.ok) {
+				setErrors({ email: "No se pudo registrar este correo." });
+				setIsSubmitted(false);
+				setStatusMessage("No se pudo completar el registro. Revisa los datos ingresados.");
+				return;
+			}
+
+			const body = (await response.json()) as Record<string, unknown>;
+
+			const sessionUser: RegisteredUser = {
+				fullName:
+					typeof body.fullName === "string"
+						? body.fullName
+						: typeof body.name === "string"
+							? body.name
+							: formData.fullName.trim(),
+				email:
+					typeof body.email === "string"
+						? body.email
+						: formData.email.trim().toLowerCase(),
+				createdAt:
+					typeof body.createdAt === "string"
+						? body.createdAt
+						: new Date().toISOString(),
+			};
+
+			window.localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(sessionUser));
+
+			setIsSubmitted(true);
+			setErrors({});
+			setFormData(initialFormData);
+
+			setTimeout(() => {
+				router.push("/");
+			}, 1000);
+		} catch {
 			setIsSubmitted(false);
-			setStatusMessage("No se pudo completar el registro. El correo ya existe.");
-			return;
+			setStatusMessage("No se pudo conectar con el servicio. Intenta nuevamente.");
 		}
-
-		const userToStore: StoredUser = {
-			fullName: formData.fullName.trim(),
-			email: formData.email.trim().toLowerCase(),
-			password: formData.password,
-			createdAt: new Date().toISOString(),
-		};
-
-		window.localStorage.setItem(
-			LOCAL_USERS_KEY,
-			JSON.stringify([...storedUsers, userToStore]),
-		);
-
-		const sessionUser = {
-			fullName: userToStore.fullName,
-			email: userToStore.email,
-			createdAt: userToStore.createdAt,
-		};
-		window.localStorage.setItem("donaton_session", JSON.stringify(sessionUser));
-
-		setIsSubmitted(true);
-		setErrors({});
-		setFormData(initialFormData);
-
-		setTimeout(() => {
-			router.push("/");
-		}, 1000);
 	};
 
 	return (

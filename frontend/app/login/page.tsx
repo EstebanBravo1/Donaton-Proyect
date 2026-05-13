@@ -3,19 +3,16 @@
 import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Heart, UserCircle } from "lucide-react";
+import { Heart } from "lucide-react";
 
-type StoredUser = {
+type LoggedInUser = {
   fullName: string;
   email: string;
-  password: string;
   createdAt: string;
 };
 
-type LoggedInUser = Omit<StoredUser, "password">;
-
-const LOCAL_USERS_KEY = "donaton_users";
 const LOCAL_SESSION_KEY = "donaton_session";
+const BFF_BASE_URL = process.env.NEXT_PUBLIC_BFF_URL ?? "http://localhost:8082/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,7 +29,7 @@ export default function LoginPage() {
     }
   }, [router]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrors({});
     setStatusMessage("");
@@ -56,25 +53,42 @@ export default function LoginPage() {
     }
 
     try {
-      const usersRaw = window.localStorage.getItem(LOCAL_USERS_KEY);
-      const users: StoredUser[] = usersRaw ? JSON.parse(usersRaw) : [];
+      const response = await fetch(`${BFF_BASE_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+        }),
+      });
 
-      const user = users.find(
-        (u) =>
-          u.email.toLowerCase() === email.toLowerCase() &&
-          u.password === password,
-      );
-
-      if (!user) {
+      if (!response.ok) {
         setErrors({ email: "Credenciales incorrectas." });
         setStatusMessage("Correo o contraseña incorrectos.");
         return;
       }
 
+      const body = (await response.json()) as Record<string, unknown>;
+
+      const fullNameFromApi =
+        typeof body.fullName === "string"
+          ? body.fullName
+          : typeof body.name === "string"
+            ? body.name
+            : "Usuario";
+
+      const emailFromApi =
+        typeof body.email === "string" ? body.email : email.trim().toLowerCase();
+
+      const createdAtFromApi =
+        typeof body.createdAt === "string" ? body.createdAt : new Date().toISOString();
+
       const sessionUser: LoggedInUser = {
-        fullName: user.fullName,
-        email: user.email,
-        createdAt: user.createdAt,
+        fullName: fullNameFromApi,
+        email: emailFromApi,
+        createdAt: createdAtFromApi,
       };
 
       window.localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(sessionUser));

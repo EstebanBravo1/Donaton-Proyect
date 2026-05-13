@@ -1,4 +1,4 @@
-package main.java.com.DonatonProyect.Bff.dto;
+package com.DonatonProyect.Bff.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

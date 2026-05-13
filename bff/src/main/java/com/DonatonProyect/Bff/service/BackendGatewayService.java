@@ -1,4 +1,6 @@
-package main.java.com.DonatonProyect.Bff.service;
+package com.DonatonProyect.Bff.service;
+
+import com.DonatonProyect.Bff.dto.RegisterRequest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -9,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class BackendGatewayService {
@@ -30,6 +35,13 @@ public class BackendGatewayService {
         String url = UriComponentsBuilder.fromUriString(userServiceUrl)
                 .path("/api/users")
                 .toUriString();
+        if (body instanceof RegisterRequest request) {
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("name", request.getFullName());
+            payload.put("email", request.getEmail());
+            payload.put("password", request.getPassword());
+            return exchange(url, HttpMethod.POST, payload);
+        }
         return exchange(url, HttpMethod.POST, body);
     }
 

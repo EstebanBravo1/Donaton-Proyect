@@ -22,20 +22,20 @@ public class UserService {
     // CREATE
     public User registrar(UserDTO dto) {
 
-        if (repository.exexistsByEmail(dto.getEmail())) {
+        if (repository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("El correo ya está registrado");
         }
 
-        User user = new User(
-            null,
-            dto.getName(),
-            dto.getEmail(),
-            dto.getPassword(),
-            dto.getPhone(),
-            dto.getAddress(),
-            dto.getRegion(),
-            dto.getComuna(), null
-        );
+        User user = User.builder()
+            .email(dto.getEmail())
+            .password(passwordEncoder.encode(dto.getPassword()))
+            .role("USER")
+            .name(dto.getName())
+            .phone(dto.getPhone() != null ? dto.getPhone() : "")
+            .address(dto.getAddress() != null ? dto.getAddress() : "")
+            .region(dto.getRegion() != null ? dto.getRegion() : "")
+            .comuna(dto.getComuna() != null ? dto.getComuna() : "")
+            .build();
 
         return repository.save(user);
     }

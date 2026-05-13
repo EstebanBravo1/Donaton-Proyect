@@ -1,4 +1,4 @@
-package main.java.com.DonatonProyect.Bff.config;
+package com.DonatonProyect.Bff.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

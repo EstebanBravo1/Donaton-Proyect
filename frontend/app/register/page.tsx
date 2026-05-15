@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Heart, UserCircle } from "lucide-react";
+import { extractErrorMessage, postToBff } from "../../lib/bff";
+import { rememberUser, setCurrentSessionUser } from "../../lib/session";
 
 type FormData = {
 	fullName: string;
@@ -18,11 +20,14 @@ type FormErrors = Partial<Record<keyof FormData, string>>;
 type StoredUser = {
 	fullName: string;
 	email: string;
-	password: string;
 	createdAt: string;
 };
 
-const LOCAL_USERS_KEY = "donaton_users";
+type RegisterResponse = {
+	id?: number;
+	name?: string;
+	email?: string;
+};
 
 const initialFormData: FormData = {
 	fullName: "",
@@ -38,20 +43,6 @@ export default function RegisterPage() {
 	const [errors, setErrors] = useState<FormErrors>({});
 	const [statusMessage, setStatusMessage] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(false);
-
-	const getStoredUsers = (): StoredUser[] => {
-		try {
-			const usersRaw = window.localStorage.getItem(LOCAL_USERS_KEY);
-			if (!usersRaw) {
-				return [];
-			}
-
-			const parsedUsers = JSON.parse(usersRaw);
-			return Array.isArray(parsedUsers) ? parsedUsers : [];
-		} catch {
-			return [];
-		}
-	};
 
 	const validateForm = () => {
 		const nextErrors: FormErrors = {};
@@ -81,7 +72,7 @@ export default function RegisterPage() {
 		return nextErrors;
 	};
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		const nextErrors = validateForm();
@@ -93,36 +84,36 @@ export default function RegisterPage() {
 			return;
 		}
 
-		const storedUsers = getStoredUsers();
-		const emailExists = storedUsers.some(
-			(user) => user.email.toLowerCase() === formData.email.trim().toLowerCase(),
-		);
-
-		if (emailExists) {
-			setErrors({ email: "Este correo ya fue registrado." });
-			setIsSubmitted(false);
-			setStatusMessage("No se pudo completar el registro. El correo ya existe.");
-			return;
-		}
-
 		const userToStore: StoredUser = {
 			fullName: formData.fullName.trim(),
 			email: formData.email.trim().toLowerCase(),
-			password: formData.password,
 			createdAt: new Date().toISOString(),
 		};
 
-		window.localStorage.setItem(
-			LOCAL_USERS_KEY,
-			JSON.stringify([...storedUsers, userToStore]),
-		);
+		try {
+			const response = await postToBff<RegisterResponse>("/api/register", {
+				fullName: userToStore.fullName,
+				email: userToStore.email,
+				password: formData.password,
+			});
 
-		const sessionUser = {
-			fullName: userToStore.fullName,
-			email: userToStore.email,
-			createdAt: userToStore.createdAt,
-		};
-		window.localStorage.setItem("donaton_session", JSON.stringify(sessionUser));
+			if (!response.ok) {
+				const fallbackMessage = `No se pudo completar el registro (${response.status}).`;
+				const message = extractErrorMessage(response.body, fallbackMessage);
+				setErrors({ email: message });
+				setIsSubmitted(false);
+				setStatusMessage(message);
+				return;
+			}
+
+			rememberUser(userToStore);
+			setCurrentSessionUser(userToStore);
+		} catch {
+			setErrors({ email: "Hubo un problema al conectar con el BFF." });
+			setIsSubmitted(false);
+			setStatusMessage("Hubo un problema al conectar con el BFF.");
+			return;
+		}
 
 		setIsSubmitted(true);
 		setErrors({});

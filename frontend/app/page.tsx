@@ -3,37 +3,42 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { UserCircle, LogIn, LogOut, Heart } from "lucide-react";
+import { clearCurrentSessionUser, getCurrentSessionUser } from "../lib/session";
 
-type StoredUser = {
+type LoggedInUser = {
   fullName: string;
   email: string;
-  password: string;
   createdAt: string;
 };
-
-type LoggedInUser = Omit<StoredUser, "password">;
-
-const LOCAL_USERS_KEY = "donaton_users";
-const LOCAL_SESSION_KEY = "donaton_session";
 
 export default function HomePage() {
   const [loggedInUser, setLoggedInUser] = useState<LoggedInUser | null>(null);
 
   useEffect(() => {
-    try {
-      const sessionRaw = window.localStorage.getItem(LOCAL_SESSION_KEY);
-      if (sessionRaw) {
-        const user = JSON.parse(sessionRaw) as LoggedInUser;
-        setLoggedInUser(user);
-      }
-    } catch {
-      window.localStorage.removeItem(LOCAL_SESSION_KEY);
+    const currentSession = getCurrentSessionUser();
+    if (currentSession) {
+      setLoggedInUser(currentSession);
+      return;
     }
+
+    // Fallback anterior con localStorage:
+    // try {
+    //   const sessionRaw = window.localStorage.getItem(LOCAL_SESSION_KEY);
+    //   if (sessionRaw) {
+    //     const user = JSON.parse(sessionRaw) as LoggedInUser;
+    //     setLoggedInUser(user);
+    //   }
+    // } catch {
+    //   window.localStorage.removeItem(LOCAL_SESSION_KEY);
+    // }
   }, []);
 
   const handleLogout = () => {
-    window.localStorage.removeItem(LOCAL_SESSION_KEY);
+    clearCurrentSessionUser();
     setLoggedInUser(null);
+
+    // Fallback anterior con localStorage:
+    // window.localStorage.removeItem(LOCAL_SESSION_KEY);
   };
 
   return (

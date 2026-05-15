@@ -1,21 +1,26 @@
 "use client";
 
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Heart, UserCircle } from "lucide-react";
+import { extractErrorMessage, postToBff } from "../../lib/bff";
+import {
+  findRememberedUserByEmail,
+  getCurrentSessionUser,
+  setCurrentSessionUser,
+} from "../../lib/session";
 
-type StoredUser = {
-  fullName: string;
-  email: string;
-  password: string;
-  createdAt: string;
+type LoginResponse = {
+  success: boolean;
+  mensaje: string;
 };
 
-type LoggedInUser = Omit<StoredUser, "password">;
-
-const LOCAL_USERS_KEY = "donaton_users";
-const LOCAL_SESSION_KEY = "donaton_session";
+type SessionUser = {
+  fullName: string;
+  email: string;
+  createdAt: string;
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,13 +31,19 @@ export default function LoginPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    const sessionRaw = window.localStorage.getItem(LOCAL_SESSION_KEY);
-    if (sessionRaw) {
+    const currentSession = getCurrentSessionUser();
+    if (currentSession) {
       router.push("/");
     }
+
+    // Fallback anterior con localStorage:
+    // const sessionRaw = window.localStorage.getItem(LOCAL_SESSION_KEY);
+    // if (sessionRaw) {
+    //   router.push("/");
+    // }
   }, [router]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrors({});
     setStatusMessage("");
@@ -56,28 +67,40 @@ export default function LoginPage() {
     }
 
     try {
-      const usersRaw = window.localStorage.getItem(LOCAL_USERS_KEY);
-      const users: StoredUser[] = usersRaw ? JSON.parse(usersRaw) : [];
+      const response = await postToBff<LoginResponse>("/api/login", {
+        email: email.trim(),
+        password,
+      });
 
-      const user = users.find(
-        (u) =>
-          u.email.toLowerCase() === email.toLowerCase() &&
-          u.password === password,
-      );
-
-      if (!user) {
-        setErrors({ email: "Credenciales incorrectas." });
-        setStatusMessage("Correo o contraseña incorrectos.");
+      if (!response.ok) {
+        const fallbackMessage = `No se pudo iniciar sesión (${response.status}).`;
+        const message = extractErrorMessage(response.body, fallbackMessage);
+        setErrors({ email: message });
+        setStatusMessage(message);
         return;
       }
 
-      const sessionUser: LoggedInUser = {
-        fullName: user.fullName,
-        email: user.email,
-        createdAt: user.createdAt,
+      if (!response.body || typeof response.body !== "object") {
+        setErrors({ email: "No se recibió una respuesta válida del BFF." });
+        setStatusMessage("No se recibió una respuesta válida del BFF.");
+        return;
+      }
+
+      if (!response.body.success) {
+        const message = response.body.mensaje || "Correo o contraseña incorrectos.";
+        setErrors({ email: message });
+        setStatusMessage(message);
+        return;
+      }
+
+      const rememberedUser = findRememberedUserByEmail(email.trim());
+      const sessionUser: SessionUser = {
+        fullName: rememberedUser?.fullName ?? email.trim(),
+        email: email.trim(),
+        createdAt: rememberedUser?.createdAt ?? new Date().toISOString(),
       };
 
-      window.localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(sessionUser));
+      setCurrentSessionUser(sessionUser);
       setIsSubmitted(true);
       setStatusMessage("Sesión iniciada correctamente.");
 

@@ -1,5 +1,9 @@
 package com.DonatonProyect.DonationService.dto;
 
+import com.DonatonProyect.DonationService.model.DonationStatus;
+import com.DonatonProyect.DonationService.model.DonorType;
+import com.DonatonProyect.DonationService.model.ResourceType;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -10,13 +14,14 @@ public class DonationRequest {
     private Long donorId;
 
     @NotNull
-    private String donorType;
+    private DonorType donorType;
 
     @NotNull
-    private String resourceType;
+    private ResourceType resourceType;
 
     private Double amount;
 
     private String description;
 
+    private DonationStatus status;
 }

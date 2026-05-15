@@ -17,28 +17,27 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository repository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder;
 
     // CREATE
     public User registrar(UserDTO dto) {
-
-        if (repository.exexistsByEmail(dto.getEmail())) {
-            throw new RuntimeException("El correo ya está registrado");
-        }
-
-        User user = new User(
-            null,
-            dto.getName(),
-            dto.getEmail(),
-            dto.getPassword(),
-            dto.getPhone(),
-            dto.getAddress(),
-            dto.getRegion(),
-            dto.getComuna(), null
-        );
-
-        return repository.save(user);
+    // Validar si el correo ya existe
+    if (repository.existsByEmail(dto.getEmail())) {
+        throw new RuntimeException("El correo ya está registrado");
     }
+    // Crear usuario
+    User user = User.builder()
+            .name(dto.getName())
+            .email(dto.getEmail())
+            .password(passwordEncoder.encode(dto.getPassword()))
+            .role("USER")
+            .phone(dto.getPhone())
+            .address(dto.getAddress())
+            .region(dto.getRegion())
+            .comuna(dto.getComuna())
+            .build();
+    return repository.save(user);
+}
 
     // READ - Listar todos los usuarios
     public List<User> listaUsers() {

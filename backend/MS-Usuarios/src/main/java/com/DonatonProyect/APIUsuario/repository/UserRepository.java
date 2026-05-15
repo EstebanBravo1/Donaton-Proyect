@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.DonatonProyect.APIUsuario.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    boolean exexistsByEmail(String email);
+    boolean existsByEmail(String email);
     User findByEmail(String email);
 }

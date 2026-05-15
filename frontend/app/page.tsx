@@ -52,12 +52,10 @@ export default function HomePage() {
 
         <div className="flex items-center gap-6">
           <div className="hidden gap-6 text-sm font-medium text-gray-600 md:flex">
-            <a href="#" className="transition hover:text-blue-600">
-              Proyectos
+            <a href="/about-us" className="transition hover:text-blue-600">
+              Acerca de Nosotros
             </a>
-            <a href="#" className="transition hover:text-blue-600">
-              Transparencia
-            </a>
+
           </div>
 
           <div className="flex items-center gap-3 border-l pl-6">
@@ -160,10 +158,10 @@ export default function HomePage() {
             <h3 className="mb-2 text-xl font-bold">Ropa y Abrigo</h3>
             <p className="text-gray-600">Prendas en buen estado para zonas vulnerables.</p>
           </div>
-          <div className="rounded-xl border p-6 text-center opacity-75 transition hover:shadow-lg">
+          <div className="rounded-xl border p-6 text-center transition hover:shadow-lg">
             <div className="mb-4 text-4xl">⚕️</div>
-            <h3 className="mb-2 text-xl font-bold text-gray-400">Insumos Médicos</h3>
-            <p className="text-sm text-gray-400">Próximamente disponible.</p>
+            <h3 className="mb-2 text-xl font-bold">Insumos Médicos</h3>
+            <p className="text-gray-600">Medicinas y equipos de salud.</p>
           </div>
         </div>
       </section>

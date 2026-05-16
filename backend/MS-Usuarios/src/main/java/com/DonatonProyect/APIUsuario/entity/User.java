@@ -39,16 +39,16 @@ public class User {
     @Column(name = "nombre", nullable = false)
     private String name;
 
-    @Column(name = "telefono", nullable = false)
+    @Column(name = "telefono")
     private String phone;
 
-    @Column(name = "direccion", nullable = false)
+    @Column(name = "direccion")
     private String address;
 
-    @Column(name = "region", nullable = false)
+    @Column(name = "region")
     private String region;
 
-    @Column(name = "comuna", nullable = false)
+    @Column(name = "comuna")
     private String comuna;
 
 }

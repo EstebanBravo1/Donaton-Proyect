@@ -9,6 +9,8 @@ import com.DonatonProyect.DonationService.dto.DonationRequest;
 import com.DonatonProyect.DonationService.dto.DonationResponse;
 import com.DonatonProyect.DonationService.model.Donation;
 import com.DonatonProyect.DonationService.model.DonationStatus;
+import com.DonatonProyect.DonationService.model.DonorType;
+import com.DonatonProyect.DonationService.model.ResourceType;
 import com.DonatonProyect.DonationService.repository.DonationRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,10 +26,14 @@ public class DonationService {
 
         Donation donation = Donation.builder()
                 .donorId(request.getDonorId())
-                .donorType(request.getDonorType())
-                .resourceType(request.getResourceType())
-                .amount(request.getAmount())
-                .description(request.getDescription())
+                .donorType(
+                    DonorType.valueOf(request.getDonorType())
+                )
+                .resourceType(
+                    ResourceType.valueOf(request.getResourceType())
+                )
+                .amount(request.getQuantity().doubleValue())
+                .description(request.getResourceName())
                 .status(DonationStatus.PENDIENTE)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -61,11 +67,13 @@ public class DonationService {
         Donation donation = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Donación no encontrada"));
 
-        donation.setDonorType(request.getDonorType());
-        donation.setResourceType(request.getResourceType());
-        donation.setAmount(request.getAmount());
-        donation.setDescription(request.getDescription());
-        donation.setStatus(request.getStatus());
+        donation.setDonorType(
+            DonorType.valueOf(request.getDonorType())
+        );
+
+        donation.setResourceType(
+            ResourceType.valueOf(request.getResourceType())
+        );
 
         Donation updated = repository.save(donation);
 

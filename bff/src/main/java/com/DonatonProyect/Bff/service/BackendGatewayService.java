@@ -33,13 +33,19 @@ public class BackendGatewayService {
 
     public ResponseEntity<Object> registerUser(Object body) {
         String url = UriComponentsBuilder.fromUriString(userServiceUrl)
-                .path("/api/users")
+                .path("/users")
                 .toUriString();
         if (body instanceof RegisterRequest request) {
             Map<String, Object> payload = new HashMap<>();
+
             payload.put("name", request.getFullName());
             payload.put("email", request.getEmail());
             payload.put("password", request.getPassword());
+            
+            payload.put("phone", "No especificado");
+            payload.put("address", "No especificada");
+            payload.put("region", "No especificada");
+            payload.put("comuna", "No especificada");
             return exchange(url, HttpMethod.POST, payload);
         }
         return exchange(url, HttpMethod.POST, body);

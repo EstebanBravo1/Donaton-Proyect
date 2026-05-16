@@ -10,18 +10,29 @@ import com.DonatonProyect.APIUsuario.dto.UserDTO;
 import com.DonatonProyect.APIUsuario.entity.User;
 import com.DonatonProyect.APIUsuario.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     // CREATE
+    @Operation(
+        summary = "Registrar usuario",
+        description = "Crea un nuevo usuario en el sistema."
+    )
+    @ApiResponse(responseCode = "200", description = "Usuario registrado exitosamente")
     @PostMapping
-    public User registrar(@RequestBody UserDTO userDTO) {
+    public User registrar(
+        @org.springframework.web.bind.annotation.RequestBody UserDTO userDTO
+    ) {
         return userService.registrar(userDTO);
     }
 
@@ -41,7 +52,7 @@ public class UserController {
     @PutMapping("/{id}")
     public User actualizar(
             @PathVariable Long id,
-            @RequestBody UserDTO userDTO) {
+            @org.springframework.web.bind.annotation.RequestBody UserDTO userDTO) {
 
         return userService.actualizar(id, userDTO);
     }
@@ -54,7 +65,9 @@ public class UserController {
 
     // LOGIN
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginDTO loginDTO) {
+    public LoginResponse login(
+        @org.springframework.web.bind.annotation.RequestBody LoginDTO loginDTO
+    ) {
         return userService.login(
                 loginDTO.getEmail(),
                 loginDTO.getPassword());

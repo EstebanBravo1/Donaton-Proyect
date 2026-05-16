@@ -2,8 +2,17 @@ package com.DonatonProyect.Bff.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class DonationRequest {
+
+    @NotNull(message = "El donorId es obligatorio")
+    private Long donorId;
 
     @NotBlank(message = "El nombre del recurso es obligatorio")
     private String resourceName;
@@ -16,6 +25,14 @@ public class DonationRequest {
 
     @NotNull(message = "La cantidad es obligatoria")
     private Integer quantity;
+
+    public Long getDonorId() {
+        return donorId;
+    }
+
+    public void setDonorId(Long donorId) {
+        this.donorId = donorId;
+    }
 
     public String getResourceName() {
         return resourceName;

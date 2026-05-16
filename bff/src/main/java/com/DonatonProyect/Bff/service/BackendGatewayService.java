@@ -33,7 +33,7 @@ public class BackendGatewayService {
 
     public ResponseEntity<Object> registerUser(Object body) {
         String url = UriComponentsBuilder.fromUriString(userServiceUrl)
-                .path("/users")
+                .path("/api/users")
                 .toUriString();
         if (body instanceof RegisterRequest request) {
             Map<String, Object> payload = new HashMap<>();

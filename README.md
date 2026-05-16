@@ -150,7 +150,3 @@ Cada backend tiene su propia configuracion de aplicacion y sus conexiones a base
 ## Trabajo en equipo
 
 Este proyecto fue desarrollado en grupo. Cada integrante participo en una parte del sistema, apoyando el desarrollo de la interfaz, la conexion con el BFF y la implementacion de los servicios backend. La organizacion por capas permitio dividir mejor las tareas y avanzar de forma ordenada.
-
-## Nota final
-
-Todavia es un proyecto en desarrollo, pero ya incluye la base principal para registrar usuarios, iniciar sesion y preparar el flujo de donaciones.

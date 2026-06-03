@@ -62,14 +62,4 @@ public class UserController {
     public void eliminar(@PathVariable Long id) {
         userService.eliminar(id);
     }
-
-    // LOGIN
-    @PostMapping("/login")
-    public LoginResponse login(
-        @org.springframework.web.bind.annotation.RequestBody LoginDTO loginDTO
-    ) {
-        return userService.login(
-                loginDTO.getEmail(),
-                loginDTO.getPassword());
-    }
 }

@@ -85,16 +85,4 @@ public class UserService {
         repository.deleteById(id);
     }
 
-    // LOGIN
-    public LoginResponse login(String email, String password) {
-
-        User usuario = buscarPorCorreo(email);
-
-        if (!passwordEncoder.matches(password, usuario.getPassword())) {
-            return new LoginResponse(false, "Contraseña incorrecta");
-        }
-
-        return new LoginResponse(true, "Login exitoso");
-    }
-
 }

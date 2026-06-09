@@ -1,4 +1,4 @@
-package com.DonatonProyect.DonationService.client;
+package com.donatonproject.donationservice.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

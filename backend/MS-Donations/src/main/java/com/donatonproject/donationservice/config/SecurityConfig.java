@@ -1,4 +1,4 @@
-package com.DonatonProyect.DonationService.config;
+package com.donatonproject.donationservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,17 +1,17 @@
-package com.DonatonProyect.DonationService.service;
+package com.donatonproject.donationservice.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.DonatonProyect.DonationService.dto.DonationRequest;
-import com.DonatonProyect.DonationService.dto.DonationResponse;
-import com.DonatonProyect.DonationService.model.Donation;
-import com.DonatonProyect.DonationService.model.DonationStatus;
-import com.DonatonProyect.DonationService.model.DonorType;
-import com.DonatonProyect.DonationService.model.ResourceType;
-import com.DonatonProyect.DonationService.repository.DonationRepository;
+import com.donatonproject.donationservice.dto.DonationRequest;
+import com.donatonproject.donationservice.dto.DonationResponse;
+import com.donatonproject.donationservice.model.Donation;
+import com.donatonproject.donationservice.model.DonationStatus;
+import com.donatonproject.donationservice.model.DonorType;
+import com.donatonproject.donationservice.model.ResourceType;
+import com.donatonproject.donationservice.repository.DonationRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,13 +1,13 @@
-package com.DonatonProyect.DonationService.controller;
+package com.donatonproject.donationservice.controller;
 
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.DonatonProyect.DonationService.dto.DonationRequest;
-import com.DonatonProyect.DonationService.dto.DonationResponse;
-import com.DonatonProyect.DonationService.service.DonationService;
+import com.donatonproject.donationservice.dto.DonationRequest;
+import com.donatonproject.donationservice.dto.DonationResponse;
+import com.donatonproject.donationservice.service.DonationService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

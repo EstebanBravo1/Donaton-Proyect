@@ -2,87 +2,106 @@ package com.DonatonProyect.APIUsuario.service;
 
 import java.util.List;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.DonatonProyect.APIUsuario.dto.LoginResponse;
-import com.DonatonProyect.APIUsuario.dto.UserDTO;
+import lombok.RequiredArgsConstructor;
+
+import com.DonatonProyect.APIUsuario.dto.UserAuthResponse;
+import com.DonatonProyect.APIUsuario.dto.UserCreateRequest;
+import com.DonatonProyect.APIUsuario.dto.UserResponse;
 import com.DonatonProyect.APIUsuario.entity.User;
 import com.DonatonProyect.APIUsuario.repository.UserRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
-    // CREATE
-    public User registrar(UserDTO dto) {
-    // Validar si el correo ya existe
-    if (repository.existsByEmail(dto.getEmail())) {
-        throw new RuntimeException("El correo ya está registrado");
-    }
-    // Crear usuario
-    User user = User.builder()
-            .name(dto.getName())
-            .email(dto.getEmail())
-            .password(passwordEncoder.encode(dto.getPassword()))
-            .role("USER")
-            .phone(dto.getPhone())
-            .address(dto.getAddress())
-            .region(dto.getRegion())
-            .comuna(dto.getComuna())
-            .build();
-    return repository.save(user);
-}
-
-    // READ - Listar todos los usuarios
-    public List<User> listaUsers() {
-        return repository.findAll();
-    }
-
-    // READ - buscar por ID
-    public User buscar(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    }
-
-    // READ - buscar por correo (para login y validaciones)
-    public User buscarPorCorreo(String correo) {
-        User user = repository.findByEmail(correo);
-        if (user == null) {
-            throw new RuntimeException("Usuario no encontrado");
+    public UserResponse crear(UserCreateRequest request) {
+        if(repository.existsByEmail(request.email())) {
+            throw new RunTimeException("Email ya registrado");
         }
-        return user;
+
+        User user = User.builder()
+                .name(request.name())
+                .email(request.email())
+                .password(request.password())
+                .role("USER")
+                .phone(request.phone())
+                .address(request.address())
+                .region(request.region())
+                .comuna(request.comuna())
+                .build();
+        
+        User saved = repository.save(user);
+
+        return map(saved);
     }
 
-    // UPDATE
-    public User actualizar(Long id, UserDTO dto) {
+    public List<UserResponse> listar() {
+
+        return repository.findAll()
+                .stream()
+                .map(this::map)
+                .toList();
+    }
+
+    public UserResponse buscar(Long id) {
+        User user = repository.findById(id)
+                .orElseThrow(
+                    () -> new RuntimeException("Usuario no encontrado")
+                );
+        return map(user);
+    }
+    
+    public UserResponse actualizar(Long id, UserCreateRequest request){
 
         User user = repository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(
+                    ()->new RuntimeException("Usuario no encontrado")
+                );
 
-        user.setName(dto.getName());
-        user.setPhone(dto.getPhone());
-        user.setAddress(dto.getAddress());
-        user.setRegion(dto.getRegion());
-        user.setComuna(dto.getComuna());
-        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-            user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        }
+        user.setName(request.name());
+        user.setPhone(request.phone());
+        user.setAddress(request.address());
+        user.setRegion(request.region());
+        user.setComuna(request.comuna());
 
-        return repository.save(user);
+        return map(repository.save(user));
     }
 
-    // DELETE
     public void eliminar(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Usuario no existe");
-        }
         repository.deleteById(id);
     }
 
+    // Usado por Auth mediante BFF
+    public UserAuthResponse buscarAuth(String email) {
+        User user = repository.findByEmail(email);
+
+        if(user == null) {
+            throw new RunTimeException("Usuario no encontrado");
+        }
+
+        return new UserAuthResponse(
+            user.getId(),
+            user.getEmail(),
+            user.getPassword(),
+            user.getRole()
+        );
+    }
+
+    private UserResponse map(User user) {
+        return new UserResponse(
+            user.getId(),
+            user.getName(),
+            user.getEmail(),
+            user.getPhone(),
+            user.getAddress(),
+            user.getRegion(),
+            user.getComuna(),
+            user.getRole()
+        );
+    }
+    
 }

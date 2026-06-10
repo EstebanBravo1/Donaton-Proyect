@@ -1,10 +1,10 @@
-package com.DonatonProyect.DonationService.dto;
+package com.donatonproject.donationservice.dto;
 
 import java.time.LocalDateTime;
 
-import com.DonatonProyect.DonationService.model.DonationStatus;
-import com.DonatonProyect.DonationService.model.DonorType;
-import com.DonatonProyect.DonationService.model.ResourceType;
+import com.donatonproject.donationservice.model.DonationStatus;
+import com.donatonproject.donationservice.model.DonorType;
+import com.donatonproject.donationservice.model.ResourceType;
 
 import lombok.Builder;
 import lombok.Data;

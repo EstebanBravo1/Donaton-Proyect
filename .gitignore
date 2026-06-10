@@ -26,3 +26,9 @@ replay_pid*
 Variables de entorno
 *.env
 .DS_Store
+
+# Gradle artifacts
+.gradle/
+**/build/
+*.lock
+*.bin

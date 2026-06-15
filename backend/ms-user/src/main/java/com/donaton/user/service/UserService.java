@@ -104,4 +104,22 @@ public class UserService {
                 user.getRole()
         );
     }
+
+    public UserAuthResponse findAuthByEmail(
+            String email
+    ) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(
+                                "Usuario no encontrado"
+                        )
+                );
+        return new UserAuthResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole()
+        );
+    }
+
 }

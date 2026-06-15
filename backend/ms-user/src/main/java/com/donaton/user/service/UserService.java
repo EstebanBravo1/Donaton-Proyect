@@ -2,6 +2,7 @@ package com.donaton.user.service;
 
 import java.util.List;
 
+import com.donaton.user.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class UserService {
 
     public UserResponse create(UserCreateRequest request) {
         if(repository.existsByEmail(request.email())) {
-            throw new RuntimeException(
+            throw new DuplicateResourceException(
                     "Email ya registrado"
             );
         }

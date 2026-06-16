@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: ms-user
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-user
+
+  template:
+    metadata:
+      labels:
+        app: ms-user
+
+    spec:
+      containers:
+        - name: ms-user
+          image: ms-user:latest
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8081
+
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://postgres-user:5432/userdb
+
+            - name: DB_USER
+              value: user
+
+            - name: DB_PASSWORD
+              value: password

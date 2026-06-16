@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fad4661d-9451-4449-ba18-e22c0b5d25a5" name="Changes" comment="feat: Restructuring of the initial structure for the ms-auth" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dockerfile" />
+        <option value="Kotlin Script" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;SmCarrera22&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/EstebanBravo1/Donaton-Proyect.git&quot;,
+    &quot;accountId&quot;: &quot;822d6a61-e35f-4331-a508-d9555bc4569d&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0032171524281774" />
+      <entry key="MS500" value="1.328032971796954" />
+      <entry key="S2" value="3.3992875920260675" />
+      <entry key="S5" value="8.526778003074346" />
+      <entry key="S10" value="13.018655042275597" />
+      <entry key="S30" value="17.801355141780668" />
+      <entry key="S60" value="19.33187407640743" />
+      <entry key="M2" value="20.463276259198548" />
+      <entry key="M5" value="23.50010067937206" />
+      <entry key="M10" value="29.351669367201644" />
+      <entry key="M15" value="35.338688664593825" />
+      <entry key="M30" value="48.84483062845052" />
+      <entry key="H1" value="62.03274622270568" />
+      <entry key="H2" value="71.57753762411117" />
+      <entry key="H4" value="77.37357651622499" />
+      <entry key="D1" value="82.83245639750139" />
+      <entry key="W1" value="83.83158453321735" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="4.9E-324" />
+      <entry key="S2" value="1.2835821977696109E-81" />
+      <entry key="S5" value="4.399157125841228E-33" />
+      <entry key="S10" value="6.632614209978767E-17" />
+      <entry key="S30" value="4.0478857450318765E-6" />
+      <entry key="S60" value="0.0020119488284167314" />
+      <entry key="M2" value="0.04535783180759577" />
+      <entry key="M5" value="0.6268079757651082" />
+      <entry key="M10" value="3.6017518379343314" />
+      <entry key="M15" value="7.09302329472204" />
+      <entry key="M30" value="14.3976800800703" />
+      <entry key="H1" value="20.715217102720416" />
+      <entry key="H2" value="24.90810007265426" />
+      <entry key="H4" value="27.329877166786382" />
+      <entry key="D1" value="29.53662229747867" />
+      <entry key="W1" value="29.933338320955283" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.9556189730777233" />
+      <entry key="MS500" value="1.3134887771640626" />
+      <entry key="S2" value="3.387716954838512" />
+      <entry key="S5" value="8.513187842511146" />
+      <entry key="S10" value="13.00795316904206" />
+      <entry key="S30" value="17.796430778766798" />
+      <entry key="S60" value="19.330925924944122" />
+      <entry key="M2" value="20.503309784625714" />
+      <entry key="M5" value="24.113358001067144" />
+      <entry key="M10" value="32.936744971515985" />
+      <entry key="M15" value="42.415185836734175" />
+      <entry key="M30" value="63.22925442898707" />
+      <entry key="H1" value="82.73927147060128" />
+      <entry key="H2" value="96.48061182304811" />
+      <entry key="H4" value="104.70074424276473" />
+      <entry key="D1" value="112.36859722075606" />
+      <entry key="W1" value="113.76485330311526" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3F8wDRgu3gYv16Mj0tgZQWVnjrW" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle./Users/sebastian/IdeaProjects/Donaton-Proyect/backend/ms-user/build.gradle.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "feature/auth-service",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/sebastian/IdeaProjects/Donaton-Proyect",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "settings.sync",
+    "settings.editor.splitter.proportion": "0.26715463",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.25134.95" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.25134.95" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fad4661d-9451-4449-ba18-e22c0b5d25a5" name="Changes" comment="" />
+      <created>1781469884890</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1781469884890</updated>
+      <workItem from="1781469891094" duration="422000" />
+      <workItem from="1781470325154" duration="5161000" />
+      <workItem from="1781475529175" duration="4000" />
+      <workItem from="1781475548705" duration="454000" />
+      <workItem from="1781494223938" duration="2400000" />
+    </task>
+    <task id="LOCAL-00001" summary="refactor ms-user">
+      <option name="closed" value="true" />
+      <created>1781471478744</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1781471478745</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Create User Class">
+      <option name="closed" value="true" />
+      <created>1781475975198</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1781475975199</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: Restructuring of the initial structure for the ms-auth">
+      <option name="closed" value="true" />
+      <created>1781496565902</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1781496565902</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor ms-user" />
+    <MESSAGE value="Create User Class" />
+    <MESSAGE value="feat: Restructuring of the initial structure for the ms-auth" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Restructuring of the initial structure for the ms-auth" />
+  </component>
+</project>

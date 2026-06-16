@@ -1,7 +1,8 @@
 package com.donaton.auth.dto;
 
-public record UserAuthData(
+public record AuthLoginRequest(
         String email,
+        String password,
         String passwordHash,
         String role
 ) {

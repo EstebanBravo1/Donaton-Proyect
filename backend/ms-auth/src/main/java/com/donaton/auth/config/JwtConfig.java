@@ -10,7 +10,7 @@ import javax.crypto.SecretKey;
 @Configuration
 public class JwtConfig {
     @Bean
-    public SecretKey jwtKey(){
+    public SecretKey jwtKey() {
         return Keys.secretKeyFor(
                 SignatureAlgorithm.HS256
         );

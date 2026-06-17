@@ -116,7 +116,6 @@ public class UserService {
                         )
                 );
         return new UserAuthResponse(
-                user.getId(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole()

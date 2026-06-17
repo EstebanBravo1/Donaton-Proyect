@@ -1,6 +1,6 @@
-package com.donaton.user.dto;
+package com.donaton.bff.dto;
 
-public record UserAuthResponse(
+public record UserAuthData(
         String email,
         String passwordHash,
         String role

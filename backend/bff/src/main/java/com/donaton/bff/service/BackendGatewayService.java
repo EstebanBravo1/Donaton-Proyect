@@ -156,4 +156,29 @@ public class BackendGatewayService {
                 Object.class
         );
     }
+
+    public ResponseEntity<Object> validateToken(
+            String authorization
+    ){
+        String url = UriComponentsBuilder
+                        .fromUriString(authServiceUrl)
+                        .path("/auth/validate")
+                        .toUriString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(
+                "Authorization",
+                authorization
+        );
+        HttpEntity<Object> entity = new HttpEntity<>(
+                        null,
+                        headers
+                );
+        return restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                Object.class
+        );
+    }
+
 }

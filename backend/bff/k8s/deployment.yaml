@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: bff
+
+spec:
+
+  replicas: 1
+
+
+  selector:
+    matchLabels:
+      app: bff
+
+
+  template:
+
+    metadata:
+      labels:
+        app: bff
+
+
+    spec:
+
+      containers:
+
+        - name: bff
+
+          image: bff:latest
+
+
+          ports:
+
+            - containerPort: 8080
+
+
+          env:
+
+
+            - name: AUTH_SERVICE_URL
+              value: http://ms-auth:8082
+
+
+            - name: USER_SERVICE_URL
+              value: http://ms-user:8081
+
+
+            - name: DONATION_SERVICE_URL
+              value: http://ms-donation:8083

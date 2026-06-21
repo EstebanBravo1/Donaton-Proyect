@@ -2,35 +2,29 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: bff
-
+  name: ms-auth
 
 spec:
-
   replicas: 1
-
 
   selector:
     matchLabels:
-      app: bff
-
+      app: ms-auth
 
   template:
 
     metadata:
       labels:
-        app: bff
-
+        app: ms-auth
 
     spec:
 
       containers:
 
-        - name: bff
+        - name: ms-auth
 
-          image: donaton-proyect-bff:latest
+          image: donaton-proyect-ms-auth:latest
           imagePullPolicy: IfNotPresent
 
           ports:
-
-            - containerPort: 8080
+            - containerPort: 8082

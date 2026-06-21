@@ -4,9 +4,11 @@ kind: Deployment
 metadata:
   name: api-gateway
 
+
 spec:
 
   replicas: 1
+
 
   selector:
     matchLabels:
@@ -26,12 +28,9 @@ spec:
 
         - name: api-gateway
 
-          image: donaton-api-gateway:latest
+          image: donaton-proyect-api-gateway:latest
+          imagePullPolicy: IfNotPresent
 
           ports:
+
             - containerPort: 8090
-
-          env:
-
-            - name: BFF_SERVICE_URL
-              value: http://bff-service:8080

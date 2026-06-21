@@ -1,14 +1,12 @@
 package com.donaton.bff.service;
 
-import com.donaton.bff.dto.AuthLoginRequest;
-import com.donaton.bff.dto.LoginRequest;
-import com.donaton.bff.dto.RegisterRequest;
-import com.donaton.bff.dto.UserAuthData;
+import com.donaton.bff.dto.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
@@ -102,22 +100,6 @@ public class BackendGatewayService {
         );
     }
 
-    public ResponseEntity<Object> createDonation(
-            Object body
-    ){
-        String url =
-                UriComponentsBuilder
-                        .fromUriString(donationServiceUrl)
-                        .path("/donations")
-                        .toUriString();
-
-        return exchange(
-                url,
-                HttpMethod.POST,
-                body
-        );
-    }
-
     public ResponseEntity<Object> getUserById(
             Long id
     ){
@@ -178,6 +160,45 @@ public class BackendGatewayService {
                 HttpMethod.POST,
                 entity,
                 Object.class
+        );
+    }
+
+    public ResponseEntity<Object> createDonation(
+            DonationRequest request
+    ){
+        String url = UriComponentsBuilder
+                .fromUriString(donationServiceUrl)
+                .path("/donations")
+                .toUriString();
+        return exchange(
+                url,
+                HttpMethod.POST,
+                request
+        );
+    }
+
+    public ResponseEntity<Object> getAllDonations() {
+        String url = UriComponentsBuilder
+                .fromUriString(donationServiceUrl)
+                .path("/donations")
+                .toUriString();
+        return exchange(
+                url,
+                HttpMethod.GET,
+                null
+        );
+    }
+
+    public ResponseEntity<Object> getDonationById(Long id) {
+        String url = UriComponentsBuilder
+                .fromUriString(donationServiceUrl)
+                .path("/donations/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+        return exchange(
+                url,
+                HttpMethod.GET,
+                null
         );
     }
 

@@ -1,4 +1,4 @@
-package com.DonatonProyect.DonationService.model;
+package com.donaton.donation.entity;
 
 public enum DonationStatus {
     PENDIENTE,

@@ -1,9 +1,7 @@
-package com.DonatonProyect.DonationService.repository;
+package com.donaton.donation.repository;
 
+import com.donaton.donation.entity.Donation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.DonatonProyect.DonationService.model.Donation;
-
 public interface DonationRepository extends JpaRepository<Donation, Long> {
-
 }

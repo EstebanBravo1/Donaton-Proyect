@@ -30,11 +30,6 @@ public class BffController {
         return backendGatewayService.loginUser(request);
     }
 
-    @PostMapping("/donations")
-    public ResponseEntity<Object> createDonation(@Valid @RequestBody DonationRequest request) {
-        return backendGatewayService.createDonation(request);
-    }
-
     @GetMapping("/users/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable Long id) {
         return backendGatewayService.getUserById(id);
@@ -48,6 +43,21 @@ public class BffController {
         return backendGatewayService.validateToken(
                 authorization
         );
+    }
+
+    @PostMapping("/donations")
+    public ResponseEntity<Object> createDonation(@Valid @RequestBody DonationRequest request) {
+        return backendGatewayService.createDonation(request);
+    }
+
+    @GetMapping("/donations")
+    public ResponseEntity<Object> getAllDonations() {
+        return backendGatewayService.getAllDonations();
+    }
+
+    @GetMapping("/donations/{id}")
+    public ResponseEntity<Object> getDonationById(@PathVariable Long id) {
+        return backendGatewayService.getDonationById(id);
     }
 
 }

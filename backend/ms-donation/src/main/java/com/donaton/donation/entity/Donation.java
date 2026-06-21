@@ -1,23 +1,17 @@
-package com.DonatonProyect.DonationService.model;
+package com.donaton.donation.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
-@Data
+@Table(name = "donations")
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Donation {
 
     @Id
@@ -32,7 +26,7 @@ public class Donation {
     @Enumerated(EnumType.STRING)
     private ResourceType resourceType;
 
-    private Double amount;
+    private Integer quantity;
 
     private String description;
 
@@ -40,5 +34,4 @@ public class Donation {
     private DonationStatus status;
 
     private LocalDateTime createdAt;
-
 }

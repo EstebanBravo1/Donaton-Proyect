@@ -20,6 +20,7 @@ public class BackendGatewayService {
     private final String userServiceUrl;
     private final String authServiceUrl;
     private final String donationServiceUrl;
+    private final String campaignServiceUrl;
 
     public BackendGatewayService(
             RestTemplate restTemplate,
@@ -28,12 +29,15 @@ public class BackendGatewayService {
             @Value("${auth.service.url}")
             String authServiceUrl,
             @Value("${donation.service.url}")
-            String donationServiceUrl
+            String donationServiceUrl,
+            @Value("${campaign.service.url}")
+            String campaignServiceUrl
     ){
         this.restTemplate = restTemplate;
         this.userServiceUrl = userServiceUrl;
         this.authServiceUrl = authServiceUrl;
         this.donationServiceUrl = donationServiceUrl;
+        this.campaignServiceUrl = campaignServiceUrl;
     }
 
     public ResponseEntity<Object> registerUser(
@@ -198,6 +202,54 @@ public class BackendGatewayService {
         return exchange(
                 url,
                 HttpMethod.GET,
+                null
+        );
+    }
+
+    public ResponseEntity<Object> createCampaign(CampaignRequest request){
+        String url = UriComponentsBuilder
+                        .fromUriString(campaignServiceUrl)
+                        .path("/campaigns")
+                        .toUriString();
+        return exchange(
+                url,
+                HttpMethod.POST,
+                request
+        );
+    }
+
+    public ResponseEntity<Object> getCampaigns(){
+        String url = campaignServiceUrl + "/campaigns";
+        return exchange(
+                url,
+                HttpMethod.GET,
+                null
+        );
+    }
+
+    public ResponseEntity<Object> getCampaignById(Long id){
+        String url = campaignServiceUrl + "/campaigns/" + id;
+        return exchange(
+                url,
+                HttpMethod.GET,
+                null
+        );
+    }
+
+    public ResponseEntity<Object> updateCampaign(Long id, CampaignRequest request){
+        String url = campaignServiceUrl + "/campaigns/" + id;
+        return exchange(
+                url,
+                HttpMethod.PUT,
+                request
+        );
+    }
+
+    public ResponseEntity<Object> deleteCampaign(Long id){
+        String url = campaignServiceUrl + "/campaigns/" + id;
+        return exchange(
+                url,
+                HttpMethod.DELETE,
                 null
         );
     }

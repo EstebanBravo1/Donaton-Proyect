@@ -8,7 +8,7 @@ WORKDIR /app
 COPY build/libs/*-SNAPSHOT.jar app.jar
 
 # Exponemos el puerto de tu app
-EXPOSE 8090
+EXPOSE 8084
 
 # Comando para iniciar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

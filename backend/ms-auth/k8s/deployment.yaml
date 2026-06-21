@@ -5,13 +5,11 @@ metadata:
   name: ms-auth
 
 spec:
-
   replicas: 1
 
   selector:
     matchLabels:
       app: ms-auth
-
 
   template:
 
@@ -19,15 +17,14 @@ spec:
       labels:
         app: ms-auth
 
-
     spec:
 
       containers:
 
         - name: ms-auth
 
-          image: ms-auth:latest
+          image: donaton-proyect-ms-auth:latest
+          imagePullPolicy: IfNotPresent
 
           ports:
-
             - containerPort: 8082

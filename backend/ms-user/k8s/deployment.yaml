@@ -6,6 +6,7 @@ metadata:
 
 spec:
   replicas: 1
+
   selector:
     matchLabels:
       app: ms-user
@@ -18,18 +19,8 @@ spec:
     spec:
       containers:
         - name: ms-user
-          image: ms-user:latest
-          imagePullPolicy: Never
+          image: donaton-proyect-ms-user:latest
+          imagePullPolicy: IfNotPresent
 
           ports:
             - containerPort: 8081
-
-          env:
-            - name: DB_URL
-              value: jdbc:postgresql://postgres-user:5432/userdb
-
-            - name: DB_USER
-              value: user
-
-            - name: DB_PASSWORD
-              value: password

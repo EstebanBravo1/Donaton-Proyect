@@ -1,4 +1,4 @@
-name: CI ms-user
+name: CI ms-donation
 
 on:
   push:

@@ -2,35 +2,33 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: bff
-
+  name: ms-donation
 
 spec:
 
   replicas: 1
 
-
   selector:
     matchLabels:
-      app: bff
+      app: ms-donation
 
 
   template:
 
     metadata:
       labels:
-        app: bff
+        app: ms-donation
 
 
     spec:
 
       containers:
 
-        - name: bff
+        - name: ms-donation
 
-          image: donaton-proyect-bff:latest
+          image: donaton-proyect-ms-donation:latest
           imagePullPolicy: IfNotPresent
 
           ports:
 
-            - containerPort: 8080
+            - containerPort: 8083

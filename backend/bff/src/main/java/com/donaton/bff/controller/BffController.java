@@ -1,5 +1,6 @@
 package com.donaton.bff.controller;
 
+import com.donaton.bff.dto.CampaignRequest;
 import com.donaton.bff.dto.DonationRequest;
 import com.donaton.bff.dto.LoginRequest;
 import com.donaton.bff.dto.RegisterRequest;
@@ -58,6 +59,37 @@ public class BffController {
     @GetMapping("/donations/{id}")
     public ResponseEntity<Object> getDonationById(@PathVariable Long id) {
         return backendGatewayService.getDonationById(id);
+    }
+
+    @PostMapping("/campaigns")
+    public ResponseEntity<Object> createCampaign(
+            @Valid
+            @RequestBody CampaignRequest request
+            ) {
+        return backendGatewayService.createCampaign(request);
+    }
+
+    @GetMapping("/campaigns")
+    public ResponseEntity<Object> getCampaing() {
+        return backendGatewayService.getCampaigns();
+    }
+
+    @GetMapping("/campaigns/{id}")
+    public ResponseEntity<Object> getCampaignById(@PathVariable Long id) {
+        return backendGatewayService.getCampaignById(id);
+    }
+
+    @PutMapping("/campaigns/{id}")
+    public ResponseEntity<Object> updateCampaign(
+            @PathVariable Long id,
+            @Valid @RequestBody CampaignRequest request
+    ) {
+        return backendGatewayService.updateCampaign(id, request);
+    }
+
+    @DeleteMapping("/campaigns/{id}")
+    public ResponseEntity<Object> deleteCampaign(@PathVariable Long id){
+        return backendGatewayService.deleteCampaign(id);
     }
 
 }

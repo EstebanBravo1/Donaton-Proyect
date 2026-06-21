@@ -1,4 +1,4 @@
-name: CI ms-user
+name: CI API Gateway
 
 on:
   push:
@@ -24,5 +24,19 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run tests + coverage
-        run: ./gradlew clean test jacocoTestReport
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle
+
+      - name: Run tests
+        run: ./gradlew clean test
+
+      - name: Generate JaCoCo report
+        run: ./gradlew jacocoTestReport
+
+      - name: Build project
+        run: ./gradlew build -x test

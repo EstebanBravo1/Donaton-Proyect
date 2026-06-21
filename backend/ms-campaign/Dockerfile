@@ -1,19 +1,14 @@
-# Build stage
-FROM gradle:8.7-jdk25 AS build
+# Usamos la imagen oficial de Java 25 para ejecutar la app
+FROM eclipse-temurin:25-jre
 
 WORKDIR /app
 
-COPY . .
+# Copiamos el archivo JAR que compilaremos en tu Mac
+# (Buscamos el jar ejecutable dentro de build/libs/)
+COPY build/libs/*-SNAPSHOT.jar app.jar
 
-RUN gradle clean build -x test
-
-# Runtime stage
-FROM eclipse-temurin:25-jdk
-
-WORKDIR /app
-
-COPY --from=build /app/build/libs/*.jar app.jar
-
+# Exponemos el puerto de tu app
 EXPOSE 8084
 
+# Comando para iniciar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

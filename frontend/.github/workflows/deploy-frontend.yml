@@ -1,0 +1,43 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # En lugar de Setup Java, configuramos Node.js y pnpm
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      # En lugar de ./gradlew, corremos los comandos de pnpm
+      - name: Build & Test
+        run: |
+          cd frontend
+          pnpm install --frozen-lockfile
+          pnpm test run
+          pnpm build
+
+      # Tu paso de Docker adaptado a la carpeta del front
+      - name: Docker Build
+        run: |
+          cd frontend
+          docker build \
+          -t donaton-frontend .

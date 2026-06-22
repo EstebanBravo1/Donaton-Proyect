@@ -16,7 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # En lugar de Setup Java, configuramos Node.js y pnpm
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -27,17 +26,15 @@ jobs:
         with:
           version: 8
 
-      # En lugar de ./gradlew, corremos los comandos de pnpm
-      - name: Build & Test
+      # Quitamos el "cd frontend" porque ya estamos en la raíz del front
+      - name: Install, Test & Build
         run: |
-          cd frontend
           pnpm install --frozen-lockfile
           pnpm test run
           pnpm build
 
-      # Tu paso de Docker adaptado a la carpeta del front
+      # Simplificamos el contexto de Docker a la raíz actual
       - name: Docker Build
         run: |
-          cd frontend
           docker build \
           -t donaton-frontend .

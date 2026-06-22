@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend de Donaton
 
-## Getting Started
+Este frontend es la interfaz web de Donaton. Está construido con Next.js y se encarga de mostrar la experiencia pública del proyecto: inicio, registro, inicio de sesión y la página informativa “Acerca de nosotros”. Su foco principal es permitir que una persona se registre, inicie sesión y navegue una interfaz simple para conectar con las campañas y el flujo de donaciones.
 
-First, run the development server:
+## Qué hace
+
+- Presenta la landing principal con acceso a registro, inicio de sesión y la sección informativa.
+- Permite crear una cuenta con validaciones de formulario en cliente.
+- Permite iniciar sesión con validaciones y mensajes de estado.
+- Maneja una sesión ligera en memoria para reflejar si el usuario está autenticado.
+- Consume el backend a través de un BFF usando rutas `api` reescritas por Next.js.
+- Incluye pruebas de UI con Vitest y Testing Library para los formularios principales.
+
+## Cómo funciona
+
+El proyecto usa el App Router de Next.js, por lo que cada pantalla vive dentro de `app/` como una ruta independiente.
+
+El flujo de autenticación es el siguiente:
+
+1. El usuario completa el formulario de registro o inicio de sesión.
+2. Los hooks del frontend validan los campos antes de enviar.
+3. `services/authService.ts` centraliza las llamadas HTTP.
+4. `lib/bff.ts` envía `POST` a `/api/register` y `/api/login`.
+5. `next.config.ts` reescribe esas rutas hacia el BFF configurado en `BFF_URL`.
+6. Si el envío es exitoso, el frontend guarda una sesión ligera en memoria con `lib/session.ts`.
+7. La página principal lee esa sesión para cambiar el contenido mostrado.
+
+Importante: la sesión aquí no se persiste en localStorage ni en cookies. Es un estado temporal en memoria, suficiente para esta interfaz y para la navegación dentro de la misma ejecución del navegador.
+
+## Cómo está construido
+
+El frontend está organizado por responsabilidades:
+
+- `app/`: rutas y pantallas principales.
+- `components/`: componentes reutilizables de UI y de contenido.
+- `hooks/`: lógica de formularios, sesión y efectos de navegación.
+- `lib/`: utilidades generales, especialmente la capa base para hablar con el BFF y la sesión.
+- `services/`: servicios de dominio que encapsulan el acceso a autenticación.
+- `public/`: recursos estáticos.
+
+Puntos clave de la implementación:
+
+- La página principal cambia según exista o no una sesión activa.
+- Los formularios de login y registro usan componentes controlados y validación manual.
+- La pantalla “Acerca de nosotros” reutiliza `Header`, `FeatureCard` y `Footer` como piezas compartidas.
+- Las llamadas de autenticación no se hacen directo al backend desde los componentes, sino desde una capa de servicio.
+
+## Tecnologías
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Lucide React para iconografía
+- Vitest + Testing Library para pruebas
+
+## Requisitos
+
+- Node.js instalado.
+- Un gestor de paquetes compatible con el proyecto. El `package.json` contiene scripts para `npm`, pero también puedes usar `pnpm` o `yarn` si tu entorno está configurado para ello.
+- El BFF accesible desde la URL configurada en `BFF_URL`.
+
+## Configuración de API
+
+Por defecto, `next.config.ts` reescribe todas las llamadas que empiezan con `/api/` hacia la URL definida en la variable de entorno `BFF_URL`.
+
+Si no defines `BFF_URL`, el frontend usa `http://localhost:8082`.
+
+Ejemplo:
+
+```bash
+set BFF_URL=http://localhost:8082
+```
+
+En PowerShell:
+
+```powershell
+$env:BFF_URL = "http://localhost:8082"
+```
+
+## Scripts disponibles
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm run start
+npm run lint
+npm run test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Ejecutar en local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Instala dependencias.
+2. Asegúrate de que el BFF esté levantado y accesible.
+3. Inicia el frontend con `npm run dev`.
+4. Abre la aplicación en `http://localhost:3000`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pruebas
 
-## Learn More
+El proyecto incluye pruebas de interfaz para login y registro en `app/login/login.test.tsx` y `app/register/register.test.tsx`.
 
-To learn more about Next.js, take a look at the following resources:
+Para ejecutarlas:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run test
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estructura principal
 
-## Deploy on Vercel
+```text
+app/
+components/
+hooks/
+lib/
+services/
+public/
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- La navegación y la autenticación están pensadas para funcionar principalmente del lado del cliente.
+- El frontend ya no es una plantilla genérica de Next.js: está adaptado al flujo de Donaton.

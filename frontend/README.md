@@ -120,3 +120,4 @@ public/
 
 - La navegación y la autenticación están pensadas para funcionar principalmente del lado del cliente.
 - El frontend ya no es una plantilla genérica de Next.js: está adaptado al flujo de Donaton.
+

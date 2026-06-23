@@ -53,7 +53,7 @@ export default function RegisterPage() {
 
                     {/* Form Container */}
                     <div className="lg:w-1/2">
-                        <div className="rounded-2xl bg-white p-6 text-gray-900 shadow-2xl mpnpm d:p-8">
+                        <div className="rounded-2xl bg-white p-6 text-gray-900 shadow-2xl md:p-8">
                             <h2 className="text-2xl font-bold">Registro de usuario</h2>
                             <p className="mt-2 text-sm text-gray-600">Todos los campos son obligatorios exceptuando los campos de contacto y ubicación.</p>
 

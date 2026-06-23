@@ -44,7 +44,7 @@ export const authService = {
     register: async (formData: Omit<RegisterFormData, "confirmPassword" | "acceptTerms">) => {
         // Mapeo Espejo hacia el DTO de Spring Boot
         const userCreateRequest = {
-            name: formData.fullName, 
+            fullName: formData.fullName,
             email: formData.email,
             password: formData.password,
             phone: formData.phone,

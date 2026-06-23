@@ -85,6 +85,19 @@ services:
     networks:
       - donaton-network
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      API_GATEWAY_URL: http://api-gateway:8090
+    depends_on:
+      - api-gateway
+    networks:
+      - donaton-network
+
 
 networks:
   donaton-network:

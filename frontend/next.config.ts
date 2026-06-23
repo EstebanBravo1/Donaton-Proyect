@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
-const BFF_URL = process.env.BFF_URL ?? "http://localhost:8082";
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL ?? "http://api-gateway:8090"
 
 const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: `${BFF_URL}/api/:path*`,
+        destination: `${API_GATEWAY_URL}/api/:path*`,
       },
     ];
   },

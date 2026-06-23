@@ -69,39 +69,41 @@ public class BackendGatewayService {
         );
     }
 
-    public ResponseEntity<Object> loginUser(
-            LoginRequest request
-    ){
-        String userUrl =
-                UriComponentsBuilder
-                        .fromUriString(userServiceUrl)
-                        .path("/users/auth/{email}")
-                        .buildAndExpand(
-                                request.getEmail()
-                        )
-                        .toUriString();
-        UserAuthData userData =
-                restTemplate.getForObject(
+    public ResponseEntity<Object> loginUser(LoginRequest request) {
+
+        String userUrl = UriComponentsBuilder
+                .fromUriString(userServiceUrl)
+                .path("/users/auth/{email}")
+                .buildAndExpand(request.getEmail())
+                .toUriString();
+
+        ResponseEntity<UserAuthData> response =
+                restTemplate.exchange(
                         userUrl,
+                        HttpMethod.GET,
+                        null,
                         UserAuthData.class
                 );
-        AuthLoginRequest authRequest =
-                new AuthLoginRequest(
-                        userData.email(),
-                        request.getPassword(),
-                        userData.passwordHash(),
-                        userData.role()
-                );
-        String authUrl =
-                UriComponentsBuilder
-                        .fromUriString(authServiceUrl)
-                        .path("/auth/login")
-                        .toUriString();
-        return exchange(
-                authUrl,
-                HttpMethod.POST,
-                authRequest
+
+        UserAuthData userData = response.getBody();
+
+        if (userData == null) {
+            throw new RuntimeException("Usuario no encontrado o respuesta inválida del MS-USER");
+        }
+
+        AuthLoginRequest authRequest = new AuthLoginRequest(
+                userData.email(),
+                request.getPassword(),
+                userData.password(),
+                userData.role()
         );
+
+        String authUrl = UriComponentsBuilder
+                .fromUriString(authServiceUrl)
+                .path("/auth/login")
+                .toUriString();
+
+        return exchange(authUrl, HttpMethod.POST, authRequest);
     }
 
     public ResponseEntity<Object> getUserById(

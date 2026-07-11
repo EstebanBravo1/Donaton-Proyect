@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar y Levantar Microservicios",
+            "type": "shell",
+            "command": "docker compose down; cd backend/ms-user; ./gradlew.bat clean bootJar; cd ../ms-auth; ./gradlew.bat clean bootJar; cd ../ms-donation; ./gradlew.bat clean bootJar; cd ../ms-campaign; ./gradlew.bat clean bootJar; cd ../bff; ./gradlew.bat clean bootJar; cd ../api-gateway; ./gradlew.bat clean bootJar; cd ../..; docker compose up --build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ],
+    "options": {
+        "shell": {
+            "executable": "powershell.exe",
+            "args": ["-Command"]
+        }
+    }
+}

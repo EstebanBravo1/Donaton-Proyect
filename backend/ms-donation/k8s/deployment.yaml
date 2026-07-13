@@ -28,6 +28,15 @@ spec:
 
           image: donaton-proyect-ms-donation:latest
           imagePullPolicy: IfNotPresent
+          env:
+              - name: DB_URL
+                value: "jdbc:postgresql://postgres-donation-service:5432/db_donation"
+              - name: DB_USER
+                value: "neondb_owner"
+              - name: DB_PASSWORD
+                value: "password123"
+              - name: SPRING_FLYWAY_REPAIR_ON_MIGRATE
+                value: "true"
 
           ports:
 

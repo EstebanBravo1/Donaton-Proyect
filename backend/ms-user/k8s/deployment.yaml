@@ -22,14 +22,12 @@ spec:
           image: donaton-proyect-ms-user:latest
           imagePullPolicy: IfNotPresent
           env:
-              - name: DB_URL
-                value: "jdbc:postgresql://postgres-user-service:5432/db_user"
-              - name: DB_USER
-                value: "neondb_owner"
-              - name: DB_PASSWORD
-                value: "password123"
-              - name: SPRING_FLYWAY_REPAIR_ON_MIGRATE
-                value: "true"
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://postgres-shared-service:5432/db_user" # <- Apunta a db_user
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "root"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: "secret"
 
           ports:
             - containerPort: 8081

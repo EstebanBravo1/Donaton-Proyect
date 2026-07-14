@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Docker: Compilar y Levantar con Docker Compose",
+            "type": "shell",
+            "command": "docker compose down; cd backend/ms-user; ./gradlew.bat clean bootJar; cd ../ms-auth; ./gradlew.bat clean bootJar; cd ../ms-donation; ./gradlew.bat clean bootJar; cd ../ms-campaign; ./gradlew.bat clean bootJar; cd ../bff; ./gradlew.bat clean bootJar; cd ../api-gateway; ./gradlew.bat clean bootJar; cd ../..; docker compose up --build",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "K8s: Compilar y Desplegar en Kubernetes",
+            "type": "shell",
+            "command": "Write-Host 'Eliminando despliegues anteriores en K8s...'; kubectl delete -f postgres-shared.yaml --ignore-not-found=true; kubectl delete -f backend/ms-user/k8s/ --ignore-not-found=true; kubectl delete -f backend/ms-auth/k8s/ --ignore-not-found=true; kubectl delete -f backend/ms-donation/k8s/ --ignore-not-found=true; kubectl delete -f backend/ms-campaign/k8s/ --ignore-not-found=true; kubectl delete -f backend/bff/k8s/ --ignore-not-found=true; kubectl delete -f backend/api-gateway/k8s/ --ignore-not-found=true; kubectl delete -f frontend/k8s/ --ignore-not-found=true; Write-Host 'Compilando microservicios con Gradle...'; cd backend/ms-user; ./gradlew.bat clean bootJar; cd ../ms-auth; ./gradlew.bat clean bootJar; cd ../ms-donation; ./gradlew.bat clean bootJar; cd ../ms-campaign; ./gradlew.bat clean bootJar; cd ../bff; ./gradlew.bat clean bootJar; cd ../api-gateway; ./gradlew.bat clean bootJar; cd ../..; Write-Host 'Construyendo imágenes Docker locales para K8s...'; docker build -t donaton-proyect-ms-user:latest ./backend/ms-user; docker build -t donaton-proyect-ms-auth:latest ./backend/ms-auth; docker build -t donaton-proyect-ms-donation:latest ./backend/ms-donation; docker build -t donaton-proyect-ms-campaign:latest ./backend/ms-campaign; docker build -t donaton-proyect-bff:latest ./backend/bff; docker build -t donaton-proyect-api-gateway:latest ./backend/api-gateway; docker build -t frontend-app:v2 ./frontend; Write-Host 'Desplegando Base de Datos Única Compartida y Microservicios...'; kubectl apply -f postgres-shared.yaml; Start-Sleep -Seconds 5; kubectl apply -f backend/ms-user/k8s/; kubectl apply -f backend/ms-auth/k8s/; kubectl apply -f backend/ms-donation/k8s/; kubectl apply -f backend/ms-campaign/k8s/; kubectl apply -f backend/bff/k8s/; kubectl apply -f backend/api-gateway/k8s/; kubectl apply -f frontend/k8s/; docker image prune -f; Write-Host '¡Despliegue en K8s completado con éxito!'",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ],
+    "options": {
+        "shell": {
+            "executable": "powershell.exe",
+            "args": ["-Command"]
+        }
+    }
+}

@@ -85,12 +85,18 @@ export default function HomePage() {
                             vital hoy mismo.
                         </p>
                         <div className="flex justify-center gap-4">
-                            <button className="rounded-xl bg-yellow-400 px-8 py-3 font-bold text-blue-900 shadow-lg transition hover:bg-yellow-300">
+                            <Link
+                                href="/gestionar-donacion"
+                                className="rounded-xl bg-yellow-400 px-8 py-3 font-bold text-blue-900 shadow-lg transition hover:bg-yellow-300"
+                            >
                                 Gestionar Donación
-                            </button>
-                            <button className="rounded-xl border-2 border-white/40 px-8 py-3 font-bold transition hover:bg-white/10">
-                                Mi Impacto Social
-                            </button>
+                            </Link>
+                            <Link
+                                href="/campanas"
+                                className="rounded-xl border-2 border-white/40 px-8 py-3 font-bold transition hover:bg-white/10"
+                            >
+                                Campañas
+                            </Link>
                         </div>
                     </div>
                 </section>

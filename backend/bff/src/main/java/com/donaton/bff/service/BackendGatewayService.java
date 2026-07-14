@@ -122,6 +122,18 @@ public class BackendGatewayService {
         );
     }
 
+    public ResponseEntity<Object> getAllUsers() {
+        String url = UriComponentsBuilder
+                .fromUriString(userServiceUrl)
+                .path("/users")
+                .toUriString();
+        return exchange(
+                url,
+                HttpMethod.GET,
+                null
+        );
+    }
+
     private ResponseEntity<Object> exchange(
             String url,
             HttpMethod method,
@@ -204,6 +216,35 @@ public class BackendGatewayService {
         return exchange(
                 url,
                 HttpMethod.GET,
+                null
+        );
+    }
+
+    public ResponseEntity<Object> updateDonation(
+            Long id,
+            DonationRequest request
+    ) {
+        String url = UriComponentsBuilder
+                .fromUriString(donationServiceUrl)
+                .path("/donations/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+        return exchange(
+                url,
+                HttpMethod.PUT,
+                request
+        );
+    }
+
+    public ResponseEntity<Object> deleteDonation(Long id) {
+        String url = UriComponentsBuilder
+                .fromUriString(donationServiceUrl)
+                .path("/donations/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+        return exchange(
+                url,
+                HttpMethod.DELETE,
                 null
         );
     }

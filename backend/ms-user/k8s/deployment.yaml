@@ -21,6 +21,13 @@ spec:
         - name: ms-user
           image: donaton-proyect-ms-user:latest
           imagePullPolicy: IfNotPresent
+          env:
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://postgres-shared-service:5432/db_user" # <- Apunta a db_user
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "root"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: "secret"
 
           ports:
             - containerPort: 8081

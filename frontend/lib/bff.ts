@@ -32,6 +32,65 @@ export async function postToBff<TResponse>(
   };
 }
 
+export async function getFromBff<TResponse>(
+  path: string,
+): Promise<{ ok: boolean; status: number; body: TResponse | string | null }> {
+  const response = await fetch(path, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const body = (await readResponseBody(response)) as TResponse | string | null;
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    body,
+  };
+}
+
+export async function putToBff<TResponse>(
+  path: string,
+  payload: JsonRecord,
+): Promise<{ ok: boolean; status: number; body: TResponse | string | null }> {
+  const response = await fetch(path, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const body = (await readResponseBody(response)) as TResponse | string | null;
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    body,
+  };
+}
+
+export async function deleteFromBff<TResponse>(
+  path: string,
+): Promise<{ ok: boolean; status: number; body: TResponse | string | null }> {
+  const response = await fetch(path, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const body = (await readResponseBody(response)) as TResponse | string | null;
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    body,
+  };
+}
+
 export function extractErrorMessage(body: unknown, fallbackMessage: string) {
   if (typeof body === "string" && body.trim().length > 0) {
     return body;

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-shared
+  labels:
+    app: postgres-shared
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-shared
+  template:
+    metadata:
+      labels:
+        app: postgres-shared
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine # La versión Alpine es ultra ligera
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "root"
+            - name: POSTGRES_PASSWORD
+              value: "secret"
+            - name: POSTGRES_DB
+              value: "postgres" # Base de datos por defecto
+          resources:
+            limits:
+              memory: "256Mi" # Le ponemos un límite estricto de RAM
+              cpu: "500m"
+          volumeMounts:
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: init-script
+          configMap:
+            name: postgres-init-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-config
+data:
+  init-user-db.sh: |
+    #!/bin/bash
+    set -e
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+        CREATE DATABASE db_user;
+        CREATE DATABASE db_campaign;
+        CREATE DATABASE db_donation;
+    EOSQL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-shared-service
+spec:
+  selector:
+    app: postgres-shared
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

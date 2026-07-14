@@ -23,7 +23,7 @@
 hs_err_pid*
 replay_pid*
 
-Variables de entorno
+# Variables de entorno
 *.env
 .DS_Store
 
@@ -32,3 +32,9 @@ Variables de entorno
 **/build/
 *.lock
 *.bin
+
+# Forzar a Git a incluir los Gradle Wrapper de todos los servicios
+!**/gradle-wrapper.jar
+!**/gradle-wrapper.properties
+!**/gradlew
+!**/gradlew.bat

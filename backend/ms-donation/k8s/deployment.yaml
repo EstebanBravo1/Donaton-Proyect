@@ -28,6 +28,13 @@ spec:
 
           image: donaton-proyect-ms-donation:latest
           imagePullPolicy: IfNotPresent
+          env:
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://postgres-shared-service:5432/db_donation" # <- Apunta a db_donation
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "root"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: "secret"
 
           ports:
 

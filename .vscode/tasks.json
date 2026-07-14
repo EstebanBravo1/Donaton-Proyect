@@ -30,6 +30,41 @@
                 "clear": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Swagger: Abrir Pruebas en Navegador",
+            "type": "shell",
+            "command": "Start-Job -ScriptBlock { kubectl port-forward svc/bff 8080:8080 } | Out-Null; Start-Sleep -Seconds 3; Write-Host 'Abriendo Swagger UI en navegador...'; Start-Process 'http://localhost:8080/swagger-ui/index.html'",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Swagger: Port-Forward (Mantener Abierto)",
+            "type": "shell",
+            "command": "kubectl port-forward svc/bff 8080:8080",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "runOptions": {
+                "runOn": "default"
+            }
         }
     ],
     "options": {
